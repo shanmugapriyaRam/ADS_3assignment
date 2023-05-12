@@ -11,6 +11,8 @@ import matplotlib.pyplot as plt
 import cluster_tools as ct
 import sklearn.cluster as cluster
 import sklearn.metrics as skmet
+import scipy.optimize as opt
+import numpy as np
 
 
 
@@ -110,6 +112,29 @@ plt.title("3 clusters")
 plt.show()
 
 
+##################
+
+
+x = df_fit["Population, total"]
+y= df_fit["Energy use (kg of oil equivalent per capita)"]
+popt, pcorr = opt.curve_fit(line, x, y)
+print("Fit parameter", popt)
+# extract variances and calculate sigmas
+sigmas = np.sqrt(np.diag(pcorr))
+
+
+z = line(x, *popt)
+
+
+plt.figure()
+plt.title("logistics function")
+plt.scatter(x, y, label="data")
+plt.plot(x, z, label="fit")
+# plot error ranges with transparency
+#plt.fill_between(years, lower, upper, alpha=0.5)
+
+plt.legend(loc="upper left")
+plt.show()
 
 
 
